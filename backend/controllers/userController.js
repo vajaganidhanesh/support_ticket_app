@@ -1,9 +1,10 @@
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcrypt')
-const User = require('../models/userModel')
+const jwt = require('jsonwebtoken')
+const User = require('../models/userModel');
 
 // @desc register a new user
-// @route /api/users
+// @route /api/register_user
 // @access Public
 const registerUser = asyncHandler(async(req,res) =>{
     const {name, email, password} = req.body;
@@ -29,14 +30,15 @@ const registerUser = asyncHandler(async(req,res) =>{
     const user = await User.create({
         name,
         email,
-        password:hashedPassword
+        password:hashedPassword,
     })
 
     if(user){
         res.status(201).json({
             _id:user._id,
             name:user.name,
-            email:user.email
+            email:user.email,
+            token:generateToken(user._id)
         })
     }else{
         res.status(401)
@@ -45,11 +47,53 @@ const registerUser = asyncHandler(async(req,res) =>{
 
 })
 
+// @desc login user
+// @route /api/login_user
+// @access Public
 const loginUser = asyncHandler(async(req,res) =>{
-    res.send({message:'Login Route'})
+
+    const {email,password} = req.body;
+    console.log(password);
+    const user = await User.findOne({email})
+    const compare = await bcrypt.compare(password,user.password)
+
+    if(user && compare){
+        res.status(200).json({
+            _id:user._id,
+            name:user.name,
+            email:user.email,
+            token:generateToken(user._id)
+        })
+    }
+    else{
+        res.status(401)
+        throw new Error('Invalid Credentials')
+    }
+
+})
+
+// Generating new token
+const generateToken = (id) =>{
+    return jwt.sign({id}, 'secret',{
+        expiresIn:'30d'
+    })
+}
+
+// @desc get current user
+// @route /api/login_user
+// @access Private
+
+const getMe = asyncHandler(async(req,res)=>{
+    const user = {
+        name:req.user.name,
+        id:req.user._id,
+        email:req.user.email
+    }
+    res.status(200).send(user)
 })
 
 module.exports = {
     registerUser,
     loginUser,
+    getMe
 }

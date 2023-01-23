@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const {registerUser,loginUser} = require('../controllers/userController')
+const {registerUser,loginUser,getMe} = require('../controllers/userController')
+const {protect} = require('../middleware/authMiddleware')
 
-router.get('/fetch',(req,res)=>{
-    res.json({message:"Welcome to Express json data"})
-})
+router.get('/users/me',protect,getMe)
  
-router.post('/register_user',registerUser)
+router.post('/users/register_user',registerUser)
 
-router.post('/login_user',loginUser)
+router.post('/users/login_user',loginUser)
 
 module.exports = router
