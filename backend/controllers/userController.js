@@ -2,7 +2,8 @@ const registerUser = (req,res) =>{
     const {name, email, password,skills} = req.body;
     
     if(!name || !email || !password){
-       return res.status(400).json({message:'Please include all fields',success:false})
+       res.status(400)
+       throw new Error('Please include all fields')
     }
 
     res.json({message:'Register Route',success:true,name,email,skills})
