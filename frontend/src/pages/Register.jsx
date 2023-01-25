@@ -30,8 +30,8 @@ function Register() {
   return (
     <>
       <section className="heading">
-        <h1>
-          <FaUser />
+        <h1 className="headingSection">
+          <FaUser /> Register
         </h1>
         <p>Please create an account</p>
       </section>
@@ -79,7 +79,7 @@ function Register() {
 
           <div className="form-group">
             <input
-              type="password2"
+              type="password"
               className="form-control"
               id="password2"
               name="password2"
