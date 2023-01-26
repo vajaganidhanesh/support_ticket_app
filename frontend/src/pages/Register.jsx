@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
 import {useSelector,useDispatch} from 'react-redux'
-import { register } from "../features/auth/authSlice";
+import { register,reset } from "../features/auth/authSlice";
+import { useNavigate} from "react-router-dom"
 
 function Register() {
   const [formdata, setFormData] = useState({
@@ -16,9 +17,24 @@ function Register() {
 
   const dispatch = useDispatch()
 
-  const { user, isLoading, isSuccess, message } = useSelector(
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
+
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    if(isError){
+      toast.error(message)
+    }
+
+    // Redirect when logged in
+    if(isSuccess || user){
+      navigate('/')
+    }
+
+    dispatch(reset())
+  },[user,isError,isSuccess,navigate,dispatch,message])
 
   const onChange = (e) => {
     setFormData((prevState)=>({
@@ -33,6 +49,7 @@ function Register() {
     if(password !== password2){
       toast.error('Passwords do not match')
     }
+    
     else{
       const userData = {
         name,
@@ -48,7 +65,7 @@ function Register() {
     <>
       <section className="heading">
         <h1 className="headingSection">
-          <FaUser /> Register {user}
+          <FaUser /> Register
         </h1>
         <p>Please create an account</p>
       </section>
