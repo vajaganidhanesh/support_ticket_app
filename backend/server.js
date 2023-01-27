@@ -14,6 +14,9 @@ app.use(express.urlencoded({extended:false}))
 
 //Routes
 app.use('/api/users',require('./routes/UserRoute'))
+app.use('/api/tickets',require('./routes/ticketRoute'))
+
+// Error handling as middleware
 app.use(errorHandler)
 
 app.listen(PORT,()=>{

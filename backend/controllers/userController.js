@@ -48,7 +48,7 @@ const registerUser = asyncHandler(async(req,res) =>{
 })
 
 // @desc login user
-// @route /api/login_user
+// @route /api/users/me
 // @access Public
 const loginUser = asyncHandler(async(req,res) =>{
 
@@ -85,9 +85,9 @@ const generateToken = (id) =>{
 
 const getMe = asyncHandler(async(req,res)=>{
     const user = {
-        name:req.user.name,
         id:req.user._id,
-        email:req.user.email
+        email:req.user.email,
+        name:req.user.name,
     }
     res.status(200).send(user)
 })
