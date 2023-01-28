@@ -12,6 +12,7 @@ const initialState = {
     message: ''
 }
 
+// Registering new user
 export const register = createAsyncThunk('auth/register',
     async(user,thunkAPI) =>{
         try {
@@ -29,6 +30,7 @@ export const register = createAsyncThunk('auth/register',
     }
 )
 
+// Login user
 export const login = createAsyncThunk('auth/login',
     async(user,thunkAPI) =>{
         try {
@@ -53,6 +55,7 @@ export const logout = createAsyncThunk('auth/logout',
     }
 )
 
+// Functionality based on states
 export const authSlice = createSlice({
     name:'auth',
     initialState,
