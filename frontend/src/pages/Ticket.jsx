@@ -5,7 +5,7 @@ import Modal from "react-modal";
 import { FaPlus } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { getTicket, closeTicket } from "../features/tickets/ticketSlice";
-import { getNotes,createNote, reset as noteRest } from "../features/notes/noteSlice";
+import { getNotes,createNote } from "../features/notes/noteSlice";
 import BackButton from "../component/BackButton";
 import Spinner from "../component/Spinner";
 import NoteItem from "./noteItem";
@@ -28,7 +28,7 @@ Modal.setAppElement("#root");
 function Ticket() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [noteText, setNoteText] = useState("");
-  const { ticket, isLoading, isSuccess, isError, message } = useSelector(
+  const { ticket, isLoading, isError, message } = useSelector(
     (state) => state.tickets
   );
 
